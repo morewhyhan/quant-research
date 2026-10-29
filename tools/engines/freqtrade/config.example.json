@@ -1,0 +1,5 @@
+{
+  "mode": "wsl",
+  "distribution": "Ubuntu",
+  "python": "/path/to/your/research-venv/bin/python"
+}

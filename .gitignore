@@ -1,0 +1,17 @@
+# Python / local environment
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+*.key
+*.pem
+*.sqlite*
+*.db
+
+# Accounts, raw data, historical archives and large results
+/data/private/
+*.local.json
+
+# Strategy source and documentation are public candidates; account configs are not.
+/strategies/**/*.json
