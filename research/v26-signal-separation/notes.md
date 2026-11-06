@@ -67,6 +67,14 @@
 
 按用户要求改用 `E0V1E64_V26_NO_RECOVERY`，只移除该退出，使用同一 2026 区间、同一交易池和同一参数，起始资金改为 1,000 USDT。完整 Freqtrade 回测得到 726 笔、611 胜 115 负、胜率 84.2%，最终已平仓资金 8,355.59 USDT，累计收益 +735.56%，账户最大回撤 37.92%，最大连续亏损 3 笔。资金曲线与收益率曲线已输出到私有结果目录，并记录为 run-005。
 
+### 7. 固定仓位与动态滚仓的 2×2 对照
+
+用户明确了四个版本：动态／固定仓位 × 恢复／无恢复退出，并要求所有版本从 1,000 USDT 开始。为避免把入场条件再次混入变量，四个版本全部保留 run-003 已冻结的 BTC 24 小时门控，只改变仓位和 `loss_half_recovery`。
+
+固定版本的目标仓位为 1,000 USDT，账户低于该金额时才按可用余额封顶；动态版本沿用 V9 的动态仓位函数。2026 区间完整回测结果：动态 + 恢复最终 16,034.85 USDT、账户最大回撤 38.11%；动态 + 无恢复最终 11,912.53 USDT、回撤 27.61%；固定 + 恢复最终 5,176.60 USDT、回撤 9.72%；固定 + 无恢复最终 4,732.24 USDT、回撤 28.97%。
+
+决定：四个类和参数文件作为同一策略族保留，先不替换实盘。固定 + 恢复是本段历史中风险最平衡的候选，但必须经过独立 forward／paper trading；高胜率的无恢复版本仍有较深尾部回撤。
+
 ## 当前决定
 
 - 冻结门控在 2024、2025、2026 三段完整回测中方向一致，值得进入 forward／纸交易。
@@ -83,4 +91,5 @@
 - 实验 3：[冻结入场门控](experiments/run-003-entry-gate/experiment.md)
 - 实验 4：[亏损退出对照](experiments/run-004-no-recovery/experiment.md)
 - 实验 5：[1,000 USDT 无恢复退出曲线](experiments/run-005-no-recovery-1000/experiment.md)
+- 实验 6：[V26 2×2 仓位与恢复退出对照](experiments/run-006-v26-2x2-1000/experiment.md)
 - 可复用工具：[snapshots.py](../../tools/trade_analysis/snapshots.py)、[candidate_eval.py](../../tools/trade_analysis/candidate_eval.py)
