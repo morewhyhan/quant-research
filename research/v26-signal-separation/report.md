@@ -99,6 +99,7 @@
 | [run-004 亏损退出对照](experiments/run-004-no-recovery/experiment.md) | 单独测试移除 `loss_half_recovery` | 收益和交易容量下降，不能直接替换 | 完成 |
 | [run-005 1,000 USDT 无恢复退出](experiments/run-005-no-recovery-1000/experiment.md) | 用用户指定本金重跑不含 `loss_half_recovery` 的版本并生成两条曲线 | 726 笔，胜率 84.2%，最终 8,355.59 USDT | 完成 |
 | [run-006 V26 2×2 仓位与恢复对照](experiments/run-006-v26-2x2-1000/experiment.md) | 1,000 USDT 下比较动态／固定仓位与恢复／无恢复退出 | 四组完整回测，固定 + 恢复的账户回撤最低 | 完成 |
+| [run-007 BTC 24 小时收益因子审计](experiments/run-007-factor-btc-ret24/experiment.md) | 检查冻结门控能否成为可复用因子 | `short_new` 是条件候选；尚未验证为稳定通用因子 | 完成 |
 
 ## 当前可执行的研究结论
 

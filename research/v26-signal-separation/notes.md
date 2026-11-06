@@ -77,6 +77,14 @@
 
 随后把一次性曲线图升级为可复用的 HTML 报告工具 `python -B -m tools report`。报告内嵌同一套研究图表风格，并把收益、回撤、稳定性、交易诊断和入场／退出归因放在同一页面；原始 ZIP、指标 JSON、manifest 和逐点 CSV 仍作为证据保留。
 
+### 8. 把环境门控单独审计为因子
+
+用户要求检查“刚才优化出的方案”能否转化成因子。研究将 `btc_ret_24h` 定义为入场前最后一根已闭合 BTC 5m K 线的过去 24 小时收益，并保留它与 `enter_tag` 的交互，而不是把它误写成所有分支通用的单调因子。
+
+探索性结果显示：`short_new` 在 2024、2025、2026 的接受组平均收益都高于阻断组，但样本小且时间簇 bootstrap 区间跨 0；`buy_1` 在 2026 反转，不能声称稳定。完整组合回测三年方向改善，只能支持继续研究，不能直接估计因子独立贡献，因为门控会改变持仓容量和替代交易。
+
+决定：把它登记为“条件因子候选”，冻结定义和阈值，下一步用未触碰 forward、成本、滑点和容量继续验证；不改实盘策略。
+
 ## 当前决定
 
 - 冻结门控在 2024、2025、2026 三段完整回测中方向一致，值得进入 forward／纸交易。
@@ -94,4 +102,5 @@
 - 实验 4：[亏损退出对照](experiments/run-004-no-recovery/experiment.md)
 - 实验 5：[1,000 USDT 无恢复退出曲线](experiments/run-005-no-recovery-1000/experiment.md)
 - 实验 6：[V26 2×2 仓位与恢复退出对照](experiments/run-006-v26-2x2-1000/experiment.md)
+- 实验 7：[BTC 24 小时收益因子审计](experiments/run-007-factor-btc-ret24/experiment.md)
 - 可复用工具：[snapshots.py](../../tools/trade_analysis/snapshots.py)、[candidate_eval.py](../../tools/trade_analysis/candidate_eval.py)
