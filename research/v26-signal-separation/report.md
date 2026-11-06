@@ -97,6 +97,7 @@
 | [run-002 开仓快照](experiments/run-002-entry-snapshots/experiment.md) | 保存开仓前可见的 BTC、币自身和信号簇信息 | 2,750 行，严格无未来数据 | 完成 |
 | [run-003 冻结入场门控](experiments/run-003-entry-gate/experiment.md) | 2024 形成候选，2025 复核，2026 冻结验证 | 三年完整 Freqtrade 方向一致 | 完成 |
 | [run-004 亏损退出对照](experiments/run-004-no-recovery/experiment.md) | 单独测试移除 `loss_half_recovery` | 收益和交易容量下降，不能直接替换 | 完成 |
+| [run-005 1,000 USDT 无恢复退出](experiments/run-005-no-recovery-1000/experiment.md) | 用用户指定本金重跑不含 `loss_half_recovery` 的版本并生成两条曲线 | 726 笔，胜率 84.2%，最终 8,355.59 USDT | 完成 |
 
 ## 当前可执行的研究结论
 
@@ -107,6 +108,7 @@
 3. 对同一时间戳的多币同步信号保留“信号簇”字段，在 paper trading 中确认它是策略机制还是回测事件处理现象。
 4. 开仓快照已经落盘；后续继续保存 RSI、CTI、价格相对 SMA/MA240、BTC 环境和候选数量，不能只保存 `enter_tag`。
 5. 冻结门控已经完成三年完整回测，但任何上线前仍需独立 forward、纸交易和小额灰度；不能只依据已成交表或回测曲线部署。
+6. `E0V1E64_V26` 与 `E0V1E64_V26_ENVGATE` 都包含 `loss_half_recovery`；如果目标是排除这条恢复退出，应明确使用 `E0V1E64_V26_NO_RECOVERY`，不能只看名称里的 V26。
 
 ## 已执行的快照与冻结门控实验
 
@@ -160,6 +162,24 @@
 同一区间、同一参数和同一 Freqtrade 路径下，将 `loss_half_recovery` 完全移除（`E0V1E64_V26_NO_RECOVERY`）得到：726 笔、最终余额 66,878.08 USDT、收益 +735.98%、最大账户回撤 37.93%、PF 1.24。它比原 V26 少了大量交易，说明这个退出条件虽然承接了亏损尾部，也在唯一持仓位的容量约束下释放了部分盈利交易；简单删除不能视为改进。
 
 退出对照原始结果在 `data/private/v26-study/backtests/no-recovery-2026-full/`。候选门控与退出机制的结果必须分开解释：前者改变入场集合，后者改变持仓时长和可用容量。
+
+### 1,000 USDT 资金曲线
+
+按用户要求，把不含 `loss_half_recovery` 的 `E0V1E64_V26_NO_RECOVERY` 在同一 2026 区间用 1,000 USDT 重新完整回测：
+
+| 指标 | 结果 |
+| --- | ---: |
+| 交易数 | 726 |
+| 胜率 | 84.2%（611 胜、115 负） |
+| 最终已平仓资金 | 8,355.59 USDT |
+| 累计收益率 | +735.56% |
+| Profit Factor | 1.24 |
+| 账户最大回撤 | 37.92% |
+| 最大连续亏损 | 3 |
+
+资金曲线和累计收益率曲线合并在 `data/private/results/v26-no-recovery-1000-2026-002/charts/equity-return.png`；对应的逐点数据在 `return-curve.csv`。上图是按平仓 `profit_abs` 累加的已平仓资金，下图是 `资金 / 1,000 - 1`，两者都不含浮动盈亏和外部充提。
+
+这次结果的胜率较高，但不能把“去掉恢复退出”理解成风险已消失：最差单笔仍为 −25.07%，账户最大回撤仍接近 38%。它只说明该版本值得继续做独立 forward 和纸交易，不说明可直接替换实盘。
 
 ## 限制
 

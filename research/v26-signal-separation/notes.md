@@ -61,11 +61,18 @@
 
 因此单独跑 `E0V1E64_V26_NO_RECOVERY` 对照，而不是把退出原因当成入场因子。
 
+### 6. 复核 V26 退出逻辑并按 1,000 USDT 重跑
+
+用户提出疑问后重新检查源码。`E0V1E64_V26.custom_exit` 明确设置 `min_worst_loss = -0.05`，并在最差收益达到 −5% 后、当前收益回到最差值一半时返回 `loss_half_recovery`；`E0V1E64_V26_ENVGATE` 继承了它。因此上一轮冻结门控回测包含这条恢复退出。
+
+按用户要求改用 `E0V1E64_V26_NO_RECOVERY`，只移除该退出，使用同一 2026 区间、同一交易池和同一参数，起始资金改为 1,000 USDT。完整 Freqtrade 回测得到 726 笔、611 胜 115 负、胜率 84.2%，最终已平仓资金 8,355.59 USDT，累计收益 +735.56%，账户最大回撤 37.92%，最大连续亏损 3 笔。资金曲线与收益率曲线已输出到私有结果目录，并记录为 run-005。
+
 ## 当前决定
 
 - 冻结门控在 2024、2025、2026 三段完整回测中方向一致，值得进入 forward／纸交易。
 - 不能因为回测改善就直接替换实盘规则；资金费、滑点、成交顺序和同 K 线同步信号仍未被历史归档完全重建。
 - 不能简单删除 `loss_half_recovery`。它降低了 2026 的收益和交易容量，必须与持仓时间、仓位和退出风险一起优化。
+- 这次 1,000 USDT 重跑说明无恢复退出版本的历史胜率为 84.2%，但最差单笔仍为 −25.07%、最大账户回撤仍接近 38%；高胜率不能替代尾部风险验证。
 - 下一阶段只做记录型 paper trading，不直接下单。
 
 ## 研究产物
@@ -75,4 +82,5 @@
 - 实验 2：[开仓快照](experiments/run-002-entry-snapshots/experiment.md)
 - 实验 3：[冻结入场门控](experiments/run-003-entry-gate/experiment.md)
 - 实验 4：[亏损退出对照](experiments/run-004-no-recovery/experiment.md)
+- 实验 5：[1,000 USDT 无恢复退出曲线](experiments/run-005-no-recovery-1000/experiment.md)
 - 可复用工具：[snapshots.py](../../tools/trade_analysis/snapshots.py)、[candidate_eval.py](../../tools/trade_analysis/candidate_eval.py)
