@@ -34,7 +34,7 @@ def read_result(path, strategy=None):
             raise ValueError(f"Strategy not present: {strategy}")
         result = choices[strategy]
         trades = result["trades"]
-        engine = {k: result.get(k) for k in ("profit_total", "profit_factor", "max_drawdown_account", "backtest_start", "backtest_end", "starting_balance")}
+        engine = {k: result.get(k) for k in ("profit_total", "profit_factor", "max_drawdown_account", "backtest_start", "backtest_end", "starting_balance", "final_balance", "stake_currency", "stake_amount", "max_open_trades", "timeframe", "timerange")}
     else:
         trades = document if isinstance(document, list) else document["trades"]
         engine = {}

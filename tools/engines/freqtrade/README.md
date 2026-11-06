@@ -7,3 +7,5 @@
 运行 python -B -m tools engine freqtrade --version 检查环境。实际回测还需自己的策略、参数和行情，并记录引擎及依赖版本。
 
 启动器只允许版本检查、策略列表和回测等研究命令，不启动实盘。
+
+回测完成后可用 `python -B -m tools engine --chart-output data/private/results/run-001 freqtrade backtesting ...` 自动导出本次结果并生成 `run-001/charts/`。使用 `--chart-strategy` 选择多策略结果。该流程仍是研究回测：不连接实盘、不下单；图表表示已平仓资金，不等同于含浮盈的实时权益。

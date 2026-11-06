@@ -14,6 +14,13 @@ def main():
     from tools.experiments.planning import KINDS, RELATIONS, preface, parent_record, study_kind
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+    p = sub.add_parser("chart", help="Plot closed-capital and drawdown from Freqtrade ZIP/JSON")
+    p.add_argument("inputs", nargs="+")
+    p.add_argument("--strategy", action="append")
+    p.add_argument("--label", action="append")
+    p.add_argument("--initial", type=float, action="append")
+    p.add_argument("--font")
+    p.add_argument("--output", required=True)
     p = sub.add_parser("analyze", help="Analyze an existing data-only result")
     p.add_argument("input"); p.add_argument("--strategy"); p.add_argument("--output", required=True)
     p = sub.add_parser("compare", help="Compare results and match trades")
@@ -36,10 +43,19 @@ def main():
     p = sub.add_parser("verify", help="Separate evidence integrity from code-version differences")
     p.add_argument("experiment")
     p = sub.add_parser("engine", help="Run a research-only engine command")
+    p.add_argument("--chart-output", help="Backtesting only: export results and charts into a new directory")
+    p.add_argument("--chart-strategy", help="Select a strategy for automatic charts")
     p.add_argument("name", choices=["freqtrade"])
     p.add_argument("arguments", nargs=argparse.REMAINDER)
     args = parser.parse_args()
+    if args.command == "chart":
+        from tools.performance.charts import render
+        render(args.inputs, args.output, args.strategy, args.label, args.initial, args.font)
+        return 0
     if args.command == "engine":
+        if args.chart_output:
+            from tools.engines.freqtrade.chart_run import run
+            return run(args.arguments, args.chart_output, args.chart_strategy)
         from tools.engines.freqtrade.runner import main as run_engine
         return run_engine(args.arguments)
     if args.command == "environment":

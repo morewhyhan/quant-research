@@ -1,3 +1,4 @@
 # Python >= 3.10. Core tools and tests use the Python standard library only.
 # Optional Freqtrade must be installed and configured separately.
 # No trading strategy, market data, account config or engine lockfile is included.
+# Optional charting: pip install -r tools/performance/requirements-charts.txt
