@@ -71,6 +71,23 @@ python -B -m tools.trade_analysis.candidate_eval `
 
 快照使用开仓时间之前最后一根已闭合 5m K 线；筛选诊断不模拟被过滤后腾出的仓位，也不替代完整回测。
 
+## 生成 HTML 策略研究报告
+
+`report` 是今后的完整研究入口。它读取 Freqtrade ZIP/JSON，一次生成自包含的 `report.html`，内容包括累计收益率、绝对资金、回撤、月度收益热力图、风险收益位置、单笔收益分布，以及入场标签和退出原因归因。图表仍使用现有研究图表的白底、网格和中文标注风格，不依赖网络。
+
+同时保留 `metrics.json`、`manifest.json` 和 `curve-*.csv` 作为可复核证据；HTML 不包含未平仓浮盈亏，报告会把这个限制写在页面中。
+
+~~~powershell
+python -B -m tools report path/to/result.zip path/to/result.zip `
+  --strategy StrategyA --strategy StrategyB `
+  --label "策略 A" --label "策略 B" `
+  --initial 1000 --initial 1000 `
+  --title "策略横向比较" `
+  --output data/private/results/report-001
+~~~
+
+输入包含多个策略时，按输入顺序重复 `--strategy`。输出目录必须不存在。报告只读结果，不导入 ZIP 内策略代码、不连接交易所、不下单。
+
 ## 自动生成资金曲线和回撤图
 
 `chart` 直接读取已有 Freqtrade ZIP/JSON，生成同一目录下的 `equity-drawdowns.png`、SVG、每条曲线的 CSV、`metrics.json`、`report.md` 和 `manifest.json`。它按平仓 `profit_abs` 累加，不给历史交易重新定价；图中是已平仓资金，不含浮动盈亏或充提调整。每个输入独立使用自己的起始资金，金额刻度独立，回撤刻度统一。

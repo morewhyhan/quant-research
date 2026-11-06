@@ -21,6 +21,14 @@ def main():
     p.add_argument("--initial", type=float, action="append")
     p.add_argument("--font")
     p.add_argument("--output", required=True)
+    p = sub.add_parser("report", help="Generate a self-contained HTML strategy research report")
+    p.add_argument("inputs", nargs="+")
+    p.add_argument("--strategy", action="append")
+    p.add_argument("--label", action="append")
+    p.add_argument("--initial", type=float, action="append")
+    p.add_argument("--font")
+    p.add_argument("--title", default="策略比较")
+    p.add_argument("--output", required=True)
     p = sub.add_parser("analyze", help="Analyze an existing data-only result")
     p.add_argument("input"); p.add_argument("--strategy"); p.add_argument("--output", required=True)
     p = sub.add_parser("compare", help="Compare results and match trades")
@@ -51,6 +59,10 @@ def main():
     if args.command == "chart":
         from tools.performance.charts import render
         render(args.inputs, args.output, args.strategy, args.label, args.initial, args.font)
+        return 0
+    if args.command == "report":
+        from tools.performance.report import render
+        render(args.inputs, args.output, args.strategy, args.label, args.initial, args.font, args.title)
         return 0
     if args.command == "engine":
         if args.chart_output:

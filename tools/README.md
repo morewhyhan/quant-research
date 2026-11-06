@@ -5,7 +5,7 @@
 | 目录 | 做什么 | 主要文件 |
 | --- | --- | --- |
 | data | 读取结果，检查开盘、最高、最低、收盘价和时间 | research_io.py、time.py |
-| performance | 计算盈亏、PF、回撤，并从 Freqtrade 结果生成资金曲线图 | metrics.py、charts.py |
+| performance | 计算盈亏、PF、回撤，从 Freqtrade 结果生成研究 HTML 和资金曲线 | metrics.py、charts.py、report.py |
 | trade_analysis | 按币种、方向和退出原因分组；生成无未来数据的入场快照 | analysis.py、snapshots.py、candidate_eval.py |
 | live_comparison | 配对两组交易，比较时间差 | matching.py |
 | experiments | 建实验记录，保存报告并检查文件 | planning.py、storage.py、report.py |
@@ -27,6 +27,6 @@ verify 分别检查原始文件是否完整、当前代码是否还是当时版�
 
 Freqtrade 仍借用外部安装环境，换电脑后需要重新配置。
 
-资金曲线图是可选能力。安装 `performance/requirements-charts.txt` 后，`python -B -m tools chart ...` 可复用地生成已平仓资金、回撤和 CSV 数据；`engine --chart-output ... freqtrade backtesting ...` 可在一次回测成功后自动接上同一流程。
+资金曲线和 HTML 报告是可选能力。安装 `performance/requirements-charts.txt` 后，`python -B -m tools report ...` 可生成自包含研究页面；旧的 `chart` 命令仍保留用于兼容和单独生成图形。`engine --chart-output ... freqtrade backtesting ...` 仍只自动接旧图表流程。
 
 入场快照和候选筛选诊断需要外部 Freqtrade 环境里已有的 pandas/pyarrow；它们只读取归档和本地 K 线，不连接交易所。

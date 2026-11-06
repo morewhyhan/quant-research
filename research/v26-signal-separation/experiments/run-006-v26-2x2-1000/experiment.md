@@ -74,11 +74,15 @@ freqtrade backtesting -c data/private/v26-study/config-2x2-1000.json \
 
 四组的交易数和胜负数成对相同：是否恢复退出改变了交易路径和持仓容量；仓位方式只改变资金曲线的金额尺度。固定版本的实际成交仓位范围约为 866.02—1,000 USDT（无恢复）和 987.24—1,000 USDT（恢复）。
 
-四组横向图表由仓库的 chart 工具生成：
+四组横向研究报告由仓库的 `report` 工具生成。HTML 内嵌所有图表，沿用原先白底、网格和中文标注的图表风格：
 
-- [`equity-drawdowns.png`](../../../../data/private/results/v26-2x2-2026-1000-001/charts-v1/equity-drawdowns.png)
-- [`metrics.json`](../../../../data/private/results/v26-2x2-2026-1000-001/charts-v1/metrics.json)
-- [`curve-1.csv`—`curve-4.csv`](../../../../data/private/results/v26-2x2-2026-1000-001/charts-v1/)
+- [`report.html`](../../../../data/private/results/v26-2x2-2026-1000-001/html-report-003/report.html)
+
+HTML 同目录保留可复核数据：
+
+- [`metrics.json`](../../../../data/private/results/v26-2x2-2026-1000-001/html-report-003/metrics.json)
+- [`manifest.json`](../../../../data/private/results/v26-2x2-2026-1000-001/html-report-003/manifest.json)
+- [`curve-1.csv`—`curve-4.csv`](../../../../data/private/results/v26-2x2-2026-1000-001/html-report-003/)
 
 图中的回撤是“已平仓资金曲线”口径，动态无恢复、固定恢复的图表回撤分别为约 31.77%、25.50%，与 Freqtrade 钱包回撤 27.61%、9.72% 不同。图表不含浮动盈亏和外部充提，不能直接拿去和实盘权益曲线逐点相减。
 
