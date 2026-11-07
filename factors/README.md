@@ -4,6 +4,6 @@
 
 | 因子 | 说明与代码 | 测试情况 |
 | --- | --- | --- |
-| [BTC 24h × 入场分支](btc-ret24-entry-gate/README.md) | [定义代码](btc-ret24-entry-gate/factor.py)；BTC 过去 24 小时收益与 `enter_tag` 的条件门控候选 | 已完成探索性审计；尚未验证为稳定有效因子 |
+| [BTC 24h × 入场分支](btc-ret24-entry-gate/README.md) | [定义代码](btc-ret24-entry-gate/factor.py)；另有 `short_1` 硬过滤与软仓位候选 | 单笔统计有方向，但硬过滤和软仓位的完整账户复核均未达到有效因子标准 |
 
 新增时放在 factors/<因子>/，按[因子模板](TEMPLATE.md)解释公式和代码。检验是否有效的报告放 research，这里用链接引用。

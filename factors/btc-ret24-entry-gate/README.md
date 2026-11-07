@@ -2,6 +2,10 @@
 
 状态：候选因子，未验证为稳定有效因子。
 
+最近复核：[run-008 有效性复核](../../research/v26-signal-separation/experiments/run-008-factor-validation/experiment.md)。原双分支规则没有通过稳定性门槛；`short_new` 值得继续做 forward，`buy_1` 在 2026 年出现反转。
+
+当前候选变体：[short_1 BTC 强势环境候选](../../research/v26-signal-separation/experiments/run-009-short1-regime/experiment.md)。它只对 `short_1` 使用冻结阈值 `btc_ret_24h >= +0.4153%`。单笔统计方向一致，但完整硬过滤账户回测失败；[软仓位复核](../../research/v26-signal-separation/experiments/run-010-short1-soft-size/experiment.md)也只小幅降低回撤并明显牺牲收益，未接入实盘。
+
 ## 先用一句话说清楚
 
 这个因子回答的问题不是“现在应该买还是卖”，而是：**当 V26 已经产生某个入场信号时，BTC 最近 24 小时的整体环境，是否足以让这个信号继续进入交易执行？**
@@ -97,5 +101,6 @@ btc_ret_24h(t) = BTC_close(t - 1) / BTC_close(t - 289) - 1
 - 它不是 BTC 价格对策略收益的因果证明。
 - 它不是“开关一加，回撤就一定下降”的保证。
 - 它不能只靠已成交交易过滤来证明，必须观察被阻断后的替代交易和完整账户路径。
+- 当前两种组合用法（硬过滤、弱环境半仓）都没有达到“保持收益并提高实盘 PF”的标准，不能称为有效 alpha 因子。
 
 详细审计：[run-007 BTC 24 小时收益因子审计](../../research/v26-signal-separation/experiments/run-007-factor-btc-ret24/experiment.md)。

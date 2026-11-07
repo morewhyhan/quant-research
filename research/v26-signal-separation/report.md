@@ -100,17 +100,21 @@
 | [run-005 1,000 USDT 无恢复退出](experiments/run-005-no-recovery-1000/experiment.md) | 用用户指定本金重跑不含 `loss_half_recovery` 的版本并生成两条曲线 | 726 笔，胜率 84.2%，最终 8,355.59 USDT | 完成 |
 | [run-006 V26 2×2 仓位与恢复对照](experiments/run-006-v26-2x2-1000/experiment.md) | 1,000 USDT 下比较动态／固定仓位与恢复／无恢复退出 | 四组完整回测，固定 + 恢复的账户回撤最低 | 完成 |
 | [run-007 BTC 24 小时收益因子审计](experiments/run-007-factor-btc-ret24/experiment.md) | 检查冻结门控能否成为可复用因子 | `short_new` 是条件候选；尚未验证为稳定通用因子 | 完成 |
+| [run-008 BTC 24 小时收益因子有效性复核](experiments/run-008-factor-validation/experiment.md) | 在冻结定义下检查时间外稳定性 | `short_new` 方向一致但区间跨 0；`buy_1` 在 2026 年反转；未通过严格有效性门槛 | 完成 |
+| [run-009 `short_1` BTC 强势环境因子候选](experiments/run-009-short1-regime/experiment.md) | 将因子收窄到大样本空头分支并冻结阈值 | 单笔统计有方向，但完整硬过滤账户回测降至 +230.71%、PF 1.15、回撤 47.78%，未通过 | 完成 |
+| [run-010 `short_1` 软仓位调节](experiments/run-010-short1-soft-size/experiment.md) | 不阻断信号，只在弱 BTC 环境降低 `short_1` 仓位 | 回撤小降 1.65 个百分点、PF 小升，但收益率从 +1,024.78% 降到 +356.27%，仍不是有效 alpha | 完成 |
 
 ## 当前可执行的研究结论
 
 目前可以提出候选规则，但不能部署：
 
 1. 把 `short_1`、`short_new`、`buy_1`、`buy_new` 分开评估；不要再把四种信号合并成一个胜率。
-2. 把 BTC 24h 状态、币自身相对均线位置、局部波动和信号分支作为交互条件，继续验证 `short_new` 和 `buy_1` 的边界。
-3. 对同一时间戳的多币同步信号保留“信号簇”字段，在 paper trading 中确认它是策略机制还是回测事件处理现象。
-4. 开仓快照已经落盘；后续继续保存 RSI、CTI、价格相对 SMA/MA240、BTC 环境和候选数量，不能只保存 `enter_tag`。
-5. 冻结门控已经完成三年完整回测，但任何上线前仍需独立 forward、纸交易和小额灰度；不能只依据已成交表或回测曲线部署。
-6. `E0V1E64_V26` 与 `E0V1E64_V26_ENVGATE` 都包含 `loss_half_recovery`；如果目标是排除这条恢复退出，应明确使用 `E0V1E64_V26_NO_RECOVERY`，不能只看名称里的 V26。
+2. BTC 24h × `short_1` 已完成硬过滤和软仓位两种组合级测试；两者都没有达到上线标准，不应继续把它当作有效 alpha。
+3. 把 BTC 24h 状态、币自身相对均线位置、局部波动和信号分支作为交互条件，若继续研究必须预先登记阈值、仓位映射和通过标准。
+4. 对同一时间戳的多币同步信号保留“信号簇”字段，在 paper trading 中确认它是策略机制还是回测事件处理现象。
+5. 开仓快照已经落盘；后续继续保存 RSI、CTI、价格相对 SMA/MA240、BTC 环境和候选数量，不能只保存 `enter_tag`。
+6. 冻结门控已经完成三年完整回测，但任何上线前仍需独立 forward、纸交易和小额灰度；不能只依据已成交表或回测曲线部署。
+7. `E0V1E64_V26` 与 `E0V1E64_V26_ENVGATE` 都包含 `loss_half_recovery`；如果目标是排除这条恢复退出，应明确使用 `E0V1E64_V26_NO_RECOVERY`，不能只看名称里的 V26。
 
 ## 已执行的快照与冻结门控实验
 
