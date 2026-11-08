@@ -13,8 +13,8 @@
 
 ## 配置
 
-- 策略类：`E0V1E64_V26_GATED_DYNAMIC_RECOVERY_BREAKOUT_VETO`
-- 实验代码：[strategy.py](strategy.py)
+- 策略类：`TrueBreakoutEntryVeto`
+- 实验代码：[true_breakout_entry_veto.py](true_breakout_entry_veto.py)
 - 配置：`data/private/v26-study/config-2x2-1000.json`
 - 本金：1,000 USDT
 - 区间：2026-01-01 ～ 2026-10-26 19:15 UTC
@@ -25,7 +25,7 @@
 ## 命令（工作区）
 
 ```text
-freqtrade backtesting --strategy E0V1E64_V26_GATED_DYNAMIC_RECOVERY_BREAKOUT_VETO
+freqtrade backtesting --strategy TrueBreakoutEntryVeto
   --config data/private/v26-study/config-2x2-1000.json
   --timerange 20260101-20261027
 ```

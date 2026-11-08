@@ -1,9 +1,13 @@
-"""V26 2x2 dynamic+recovery with unresolved adverse-breakout entry veto."""
+"""实验代码：V26 动态+恢复版本，加上“未收回的不利突破不进场”。
+
+这不是生产策略。完整回测失败：+365.99%，PF 1.10，回撤 67.02%。
+不要把本文件复制回 strategies/。
+"""
 import pandas as pd
 from E0V1E64_V26_GATED_DYNAMIC_RECOVERY import E0V1E64_V26_GATED_DYNAMIC_RECOVERY
 
 
-class E0V1E64_V26_GATED_DYNAMIC_RECOVERY_BREAKOUT_VETO(E0V1E64_V26_GATED_DYNAMIC_RECOVERY):
+class TrueBreakoutEntryVeto(E0V1E64_V26_GATED_DYNAMIC_RECOVERY):
     breakout_lookback = 50
     breakout_recent = 6
 
