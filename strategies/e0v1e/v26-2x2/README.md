@@ -32,3 +32,6 @@ stake = min(1000, max_stake)
 同一目录保存了 V9/V5/V3 的策略依赖、冻结参数 JSON 和四个最终策略类。回测时把本目录作为 Freqtrade 的 `--strategy-path`，显式指定一个策略类；不要加载实盘配置，不要用此目录启动 live 或 dry-run bot。
 
 本族策略是研究版本，不代表已经批准上线。完整的区间、本金、费用、数据范围和结果必须写入对应的研究实验记录。
+## 实验性变体
+
+- `E0V1E64_V26_GATED_DYNAMIC_RECOVERY_BREAKOUT_VETO`：在动态 + 恢复版本上增加“未收回不利突破禁止开仓”。仅用于研究；完整回测失败，不可上线。结果见 `research/breakout-false-filter/experiments/run-002-entry-veto/experiment.md`。
