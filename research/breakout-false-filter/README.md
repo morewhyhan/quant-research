@@ -40,6 +40,7 @@
 | run-015 | 原始 K 线序列模型 | 失败 |
 | run-016 | 价格行为与流动性特征 | 失败 |
 | run-017 | 资金费率代理 | 失败 |
+| run-018 | 极端 K 线跳过恢复退出 | 不显著 |
 
 ## 实验代码
 
@@ -50,6 +51,12 @@
   - 类名：`TrueBreakoutEntryVeto`
   - 作用：在 2×2 动态+恢复版本上，遇到“未收回的不利突破”就不开仓。
   - 结果：失败，+365.99%，PF 1.10，回撤 67.02%。
+  - 不要用于实盘。
+- run-018：
+  - 文件：[strategy.py](experiments/run-018-extreme-recovery/strategy.py)
+  - 类名：`E0V1E64_V26_GATED_DYNAMIC_RECOVERY_EXTREME_HOLD`
+  - 作用：极端 5m 扩张时临时跳过 `loss_half_recovery`。
+  - 结果：不显著，+1,323.91%，PF 1.29，回撤 37.23%。
   - 不要用于实盘。
 
 ## 数据
