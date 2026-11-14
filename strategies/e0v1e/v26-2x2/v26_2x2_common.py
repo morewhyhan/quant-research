@@ -41,16 +41,21 @@ class OptimizedEntryGateMixin:
 
 
 class RecoveryExitMixin:
-    """Optional V26 exit: recover half of a worst loss after -5%."""
+    """Optional V26 exit: recover part of a worst loss after a threshold.
+
+    Defaults reproduce the frozen rule: exit once the position has recovered
+    half of its worst loss after that loss reached -5%.
+    """
 
     min_worst_loss = -0.05
+    recovery_divisor = 2.0
 
     def custom_exit(self, pair, trade, current_time, current_rate, current_profit, **kwargs):
         reason = super().custom_exit(pair, trade, current_time, current_rate, current_profit, **kwargs)
         state = trade.get_custom_data(key="loss_recovery", default=None)
         worst = current_profit if state is None else min(float(state["worst"]), current_profit)
         trade.set_custom_data(key="loss_recovery", value={"worst": worst})
-        if worst <= self.min_worst_loss and current_profit >= worst / 2.0:
+        if worst <= self.min_worst_loss and current_profit >= worst / self.recovery_divisor:
             return "loss_half_recovery"
         return reason
 

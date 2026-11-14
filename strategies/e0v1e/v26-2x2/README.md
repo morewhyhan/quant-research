@@ -1,8 +1,15 @@
 # V26 2×2 strategy family
 
-这是一组只改变两个变量的对照策略。四个版本都保留已经冻结的 BTC 24 小时入场门控；门控阈值来自 2024 年校准，之后用于跨年复核。
+本目录 34 个策略类：四个冻结版本 + 30 个研究变体。文件各管一件事：
 
-## 四个版本
+| 文件 | 只做一件事 |
+| --- | --- |
+| 本文件 | 说明目录结构和四个冻结版本 |
+| [rules.md](rules.md) | 仓位与恢复退出的定义 |
+| [params.md](params.md) | 参数文件、预检、复现、数据位置 |
+| [variants.md](variants.md) | 30 个变体：类名 → 改动 → 结论 → 实验 |
+
+## 四个冻结版本
 
 | 策略类 | 仓位 | `loss_half_recovery` | 用途 |
 | --- | --- | --- | --- |
@@ -11,27 +18,10 @@
 | `E0V1E64_V26_GATED_FIXED_RECOVERY` | 每次最多 1,000 USDT | 开启 | 固定 + 恢复退出 |
 | `E0V1E64_V26_GATED_FIXED_NO_RECOVERY` | 每次最多 1,000 USDT | 关闭 | 固定 + 无恢复退出 |
 
-四个版本必须使用相同的交易池、时间区间、费用、杠杆、最大持仓数和参数文件。不要把 `ENVGATE` 再作为第五个独立变量混入这组比较。
+四个版本的仓位与退出定义见 [rules.md](rules.md)；结果见 [run-006](../../../research/v26-signal-separation/experiments/run-006-v26-2x2-1000/experiment.md)。
 
-## 仓位定义
+## 当前锁定版本
 
-固定版本的目标仓位是 1,000 USDT：
+`E0V1E64_V26_BAND_A`，业绩与系数见 [profit-levers 报告](../../../research/profit-levers/report.md)；谱系见 [E0V1E 策略族说明](../README.md)。
 
-```python
-stake = min(1000, max_stake)
-```
-
-账户可用资金超过 1,000 时，下一笔仍最多使用 1,000；低于 1,000 时，使用 Freqtrade 允许的剩余金额。固定的是每笔 USDT 目标金额，不是账户百分比。
-
-动态版本沿用 V9 的动态仓位函数，仓位随可用账户资金和回撤状态变化。
-
-恢复退出的定义是：持仓历史最差收益达到 −5% 后，当前收益回到最差值的一半时，返回 `loss_half_recovery`。无恢复版本不执行这一条，其他退出保持不变。
-
-## 依赖和复现
-
-同一目录保存了 V9/V5/V3 的策略依赖、冻结参数 JSON 和四个最终策略类。回测时把本目录作为 Freqtrade 的 `--strategy-path`，显式指定一个策略类；不要加载实盘配置，不要用此目录启动 live 或 dry-run bot。
-
-本族策略是研究版本，不代表已经批准上线。完整的区间、本金、费用、数据范围和结果必须写入对应的研究实验记录。
-## 实验性变体
-
-- `E0V1E64_V26_GATED_DYNAMIC_RECOVERY_BREAKOUT_VETO`：在动态 + 恢复版本上增加“未收回不利突破禁止开仓”。仅用于研究；完整回测失败，不可上线。结果见 `research/breakout-false-filter/experiments/run-002-entry-veto/experiment.md`。
+这是研究版本，不代表已批准上线。
