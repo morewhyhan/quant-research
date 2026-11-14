@@ -15,3 +15,5 @@ __pycache__/
 
 # Strategy source and documentation are public candidates; account configs are not.
 /strategies/**/*.json
+!/strategies/e0v1e/v26-2x2/*.json
+!/research/live-v26-dynamic-2026/run/*.sqlite
